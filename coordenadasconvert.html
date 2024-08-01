@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <! todo en uno -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Coordenadas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("bg.jpg");
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: #ffffff8c;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: calc(100% - 20px);
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #e02e0f;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        hr {
+            margin: 20px 0;
+        }
+
+        #result {
+            margin-top: 20px;
+        }
+
+        #error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Conversor de Coordenadas</h1>
+        <div class="form-group">
+            <label for="x">Coordenada X:</label>
+            <input type="number" id="x" step="any">
+        </div>
+        <div class="form-group">
+            <label for="y">Coordenada Y:</label>
+            <input type="number" id="y" step="any">
+        </div>
+        <button onclick="convertToPolar()">Convertir a Polar</button>
+        <hr>
+        <div class="form-group">
+            <label for="r">Radio (r):</label>
+            <input type="number" id="r" step="any">
+        </div>
+        <div class="form-group">
+            <label for="theta">Ángulo (θ en grados):</label>
+            <input type="number" id="theta" step="any">
+        </div>
+        <button onclick="convertToRectangular()">Convertir a Rectangular</button>
+        <hr>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function convertToPolar() {
+            const x = parseFloat(document.getElementById('x').value);
+            const y = parseFloat(document.getElementById('y').value);
+            const resultDiv = document.getElementById('result');
+
+            // Validación de entradas
+            if (isNaN(x) || isNaN(y)) {
+                resultDiv.innerHTML = '<p id="error">Por favor, ingresa valores válidos para X e Y.</p>';
+                return;
+            }
+
+            // Conversión a coordenadas polares
+            const r = Math.sqrt(x * x + y * y);
+            const theta = Math.atan2(y, x) * (180 / Math.PI);
+
+            resultDiv.innerHTML = `<p>Coordenadas Polares:</p><p>Radio (r): ${r.toFixed(2)}</p><p>Ángulo (θ): ${theta.toFixed(2)} grados</p>`;
+        }
+
+        function convertToRectangular() {
+            const r = parseFloat(document.getElementById('r').value);
+            const theta = parseFloat(document.getElementById('theta').value);
+            const resultDiv = document.getElementById('result');
+
+            // Validación de entradas
+            if (isNaN(r) || isNaN(theta)) {
+                resultDiv.innerHTML = '<p id="error">Por favor, ingresa valores válidos para Radio y Ángulo.</p>';
+                return;
+            }
+
+            // Conversión a coordenadas rectangulares
+            const thetaRad = theta * (Math.PI / 180);
+            const x = r * Math.cos(thetaRad);
+            const y = r * Math.sin(thetaRad);
+
+            resultDiv.innerHTML = `<p>Coordenadas Rectangulares:</p><p>X: ${x.toFixed(2)}</p><p>Y: ${y.toFixed(2)}</p>`;
+        }
+    </script>
+</body>
+</html>
